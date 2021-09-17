@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+  invites_app:
+    tty: true
+    build:
+      context: .
+      dockerfile: ./Dockerfile.test
+    image: invites_app
+    environment:
+      TESTING: 1
+    networks:
+      - app
+    volumes:
+      - ./src:/application/src/  # for dev only
+      - ./alembic_migrations:/application/alembic_migrations/  # for dev only
+#      - static_volume:/opt/data/static/
+    command: "pytest -s"
+
+networks:
+  app:

@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "95669e10-36d9-4aa3-ae6d-668dd2dbb7cf",
+		"name": "invites_app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create test user and bp",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/api/users/make_test_user_and_bp/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"users",
+						"make_test_user_and_bp",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get arrived users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/api/users/list_arrived/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"users",
+						"list_arrived",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check In user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value\": \"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/api/boarding_passes/check_in/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"boarding_passes",
+						"check_in",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Boarding Pass",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"destination\": \"MSK\",\n    \"boarding_datetime\": \"2020-01-01 06:30\",\n    \"address\": \"aeroport\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/api/users/1/generate_pass/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"users",
+						"1",
+						"generate_pass",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

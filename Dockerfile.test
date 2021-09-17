@@ -1,0 +1,17 @@
+FROM python:3.8-bullseye
+
+ADD . /application
+
+WORKDIR application
+
+RUN mkdir /opt/data
+RUN mkdir /opt/data/static
+
+RUN python -m pip install --upgrade pip
+RUN pip install pipenv
+
+RUN pipenv install --system --deploy --ignore-pipfile
+
+EXPOSE 8000
+
+ENTRYPOINT pytest -s

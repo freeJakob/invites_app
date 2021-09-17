@@ -1,0 +1,6 @@
+API_ENDPOINT = 'api'
+
+
+# Http codes
+HTTP_400_BAD_REQUEST = 400
+HTTP_200_OK = 200

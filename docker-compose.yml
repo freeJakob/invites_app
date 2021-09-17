@@ -1,0 +1,66 @@
+version: '3.1'
+
+services:
+  invites_app:
+    tty: true
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: invites_app
+    environment:
+      POSTGRES_HOST: '127.0.0.1'
+      POSTGRES_PORT: '5432'
+      POSTGRES_USER: 'test_user'
+      POSTGRES_USER_PASSWORD: '123456'
+      POSTGRES_DB_NAME: 'invites_app_db'
+    networks:
+      - app
+#    ports:
+#      - 80:8000
+    volumes:
+      - ./src:/application/src/  # for dev only
+      - /opt/data/static:/opt/data/static/
+      - ./alembic_migrations:/application/alembic_migrations/  # for dev only
+#      - static_volume:/opt/data/static/
+    depends_on:
+      db:
+        condition: service_healthy
+    command: "uvicorn --host 0.0.0.0 --port 8000 src.app.main:app"
+  nginx:
+    image: nginx:1.15
+    ports:
+      - 80:8000
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d
+      - /opt/data/static:/opt/data/static/
+#      - static_volume:/opt/data/static/
+    depends_on:
+      - invites_app
+    networks:
+      - app
+  db:
+    tty: true
+    image: postgres:11
+    volumes:
+      - ./postgres/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
+    environment:
+      DATABASE_NAME: invites_app_db
+      DATABASE_USER: test_user
+      DATABASE_PASSWORD: 123456
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: invites_app_db
+    networks:
+      - app
+    ports:
+      -  "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 1s
+      timeout: 1s
+      retries: 5
+
+networks:
+  app:
+
+volumes:
+  static_volume:
