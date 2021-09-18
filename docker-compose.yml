@@ -16,7 +16,7 @@ services:
     networks:
       - app
     volumes:
-      - ./src:/application/src/  # for dev only
+#      - ./src:/application/src/  # for dev only
 #      - /opt/data/static:/opt/data/static/ # for dev only
       - ./alembic_migrations:/application/alembic_migrations/  # for dev only
       - static_volume:/opt/data/static/

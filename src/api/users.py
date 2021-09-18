@@ -4,7 +4,7 @@ from operator import eq
 from typing import Dict, Tuple
 
 from PIL import Image, ImageFont, ImageDraw
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, BackgroundTasks
 from sqlalchemy import select, insert
 
 from src.api.const import API_ENDPOINT, HTTP_400_BAD_REQUEST
@@ -42,8 +42,10 @@ async def list_checked_in_users():
     return checked_in_users
 
 
-@users_router.post('/%s/%s/{user_id}/generate_pass/' % (API_ENDPOINT, USERS_ENDPOINT))
-async def generate(user_id: int, bp_info: BPInfo):
+@users_router.post(
+    '/%s/%s/{user_id}/generate_pass/' % (API_ENDPOINT, USERS_ENDPOINT)
+)
+async def generate(user_id: int, bp_info: BPInfo, bg_tasks: BackgroundTasks):
     user = await _get_user(user_id)
     if not await _is_bp_created(user_id, bp_info):
         raise HTTPException(
@@ -51,8 +53,8 @@ async def generate(user_id: int, bp_info: BPInfo):
             detail=f'Boarding Pass for user: {user["name"]} already created'
         )
     boarding_code = secrets.token_hex(4)
-    _generate_bp_image(bp_info, user, boarding_code)
     await _create_bp(user_id, bp_info, boarding_code)
+    bg_tasks.add_task(_generate_bp_image, bp_info, user, boarding_code)
 
     return user
 
