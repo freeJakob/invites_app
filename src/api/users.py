@@ -136,7 +136,7 @@ def _generate_bp_image(bp_info: BPInfo, user: Dict[str, str], boarding_code: str
 
     bp_template.save(
         f'{BP_IMAGES_STORAGE}/'
-        f'bp_{bp_info.destination}_{bp_info.boarding_datetime}.png'
+        f'bp_{user["name"]}_{bp_info.destination}_{bp_info.boarding_datetime}.png'
     )
 
 

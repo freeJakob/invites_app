@@ -16,7 +16,7 @@ WORKDIR application
 # COPY UI BUNDLE FROM STAGE_1
 RUN mkdir /opt/data
 RUN mkdir /opt/data/static
-RUN mkdir ./src/bp_images
+RUN mkdir -p ./src/bp_images
 COPY --from=0 /src/dist/ /opt/data/static/
 RUN rm -rf ./invites_app_ui
 
