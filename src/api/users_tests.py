@@ -1,6 +1,8 @@
 import os
 from datetime import datetime, timedelta
 
+import pytest
+
 from src.app.config import BP_IMAGES_STORAGE
 from src.app.models import Users, BoardingPasses
 from src.app.test_db_utils import create_objects, flush_table
@@ -39,13 +41,17 @@ boarding_passes = [
 ]
 
 
-def test_users_list_latest(api_client):
-    create_objects(Users, users)
-    create_objects(BoardingPasses, boarding_passes)
+@pytest.mark.parametrize('users_data,bp_data,expected_count', [
+    (users, boarding_passes, 1),
+    ([], [], 0),
+])
+def test_users_list_latest(users_data, bp_data, expected_count, api_client):
+    create_objects(Users, users_data)
+    create_objects(BoardingPasses, bp_data)
 
     response = api_client.get("/api/users/list_arrived/")
     assert response.status_code == 200
-    assert len(response.json()) == 1
+    assert len(response.json()) == expected_count
 
     flush_table(Users)
     flush_table(BoardingPasses)

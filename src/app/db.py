@@ -17,6 +17,6 @@ if os.environ.get('TESTING'):
     )
     models.Base.metadata.create_all(engine)
 else:
-    database = databases.Database('postgresql://test_user:123456@db:5432/invites_app_db')
+    database = databases.Database(os.environ["DATABASE_URL"])
 
 

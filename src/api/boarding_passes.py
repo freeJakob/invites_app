@@ -30,6 +30,7 @@ async def check_in(check_in_code: CheckInCode):
             status_code=HTTP_400_BAD_REQUEST,
             detail='Already checked in',
         )
+
     bp['checked_in'] = True
     bp['checked_at'] = datetime.now()
     await _update_bp(bp)
