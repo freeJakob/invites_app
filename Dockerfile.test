@@ -6,6 +6,7 @@ WORKDIR application
 
 RUN mkdir /opt/data
 RUN mkdir /opt/data/static
+RUN mkdir ./src/bp_images
 
 RUN python -m pip install --upgrade pip
 RUN pip install pipenv
